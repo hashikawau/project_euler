@@ -1,3 +1,5 @@
+#! /bin/env runcpp.sh
+
 #include <iostream>
 #include <vector>
 
