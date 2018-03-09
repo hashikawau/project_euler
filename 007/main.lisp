@@ -1,4 +1,4 @@
-#! /usr/bin/clisp -C
+#! /bin/env runclisp.sh
 
 (defun primes-to (n)
   ;(reversed-primes-to n))

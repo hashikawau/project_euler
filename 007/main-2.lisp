@@ -1,4 +1,4 @@
-#! /bin/env clisp
+#! /bin/env runclisp.sh
 
 (defun primes-to (n)
   (let
