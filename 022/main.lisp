@@ -11,14 +11,14 @@
     ((lst (name-list)))
     (mapcar
       #'calc-score
-      (seq-rev 1 (length lst))
-      lst)))
+      (seq 1 (length lst))
+      (sort lst #'string<))))
 
-(defun seq-rev (i-start i-end &optional (accum-list nil))
+(defun seq (i-start i-end &optional (accum-list nil))
   (if
     (> i-start i-end)
     accum-list
-    (seq-rev (1+ i-start) i-end (cons i-start accum-list))))
+    (seq i-start (1- i-end) (cons i-end accum-list))))
 
 (defun name-list ()
   (mapcar
@@ -70,6 +70,5 @@
 ;(format t "~A~%" (name-list))
 ;(format t "~A~%" (length (name-list)))
 ;(format t "~A~%" (each-names-scores))
-;(format t "~A~%" (length (each-names-scores)))
 (format t "~A~%" (names-scores))
 
