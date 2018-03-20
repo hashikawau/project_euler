@@ -68,10 +68,11 @@
   )
 
 (defun sum (lst)
-  (apply #'+ lst))
+  (reduce #'+ lst))
 
 (let ((triangle (make-triangle 1))) (format t "~A~%" triangle))
 (let ((triangle (make-triangle 2))) (format t "~A~%" triangle))
+(let ((triangle (make-triangle 2))) (format t "~A~%" (maximum-path-sum triangle)))
 (let ((triangle (make-triangle 1))) (format t "~A~%" (sum (maximum-path-sum triangle))))
 (let ((triangle (make-triangle 2))) (format t "~A~%" (sum (maximum-path-sum triangle))))
 
