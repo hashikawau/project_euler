@@ -6,6 +6,8 @@
   (:use common-lisp)
   (:export
     for-each
+    take
+    drop
     p-apply
     f-compose
     seq
@@ -23,6 +25,24 @@
   (dolist
     (x xs)
     (apply f (list x))))
+
+;--------------------------------------
+;
+;--------------------------------------
+(defun take (n lst &optional (accum nil))
+  (if
+    (< n 1)
+    (reverse accum)
+    (let
+      ((x (first lst))
+       (xs (rest lst)))
+      (take (1- n) xs (cons x accum)) )))
+
+(defun drop (n lst)
+  (if
+    (< n 1)
+    lst
+    (drop (1- n) (rest lst)) ))
 
 ;--------------------------------------
 ;

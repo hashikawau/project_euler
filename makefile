@@ -2,6 +2,8 @@
 
 
 
+lisp.622:
+	clisp -C 622/main.lisp
 
 lisp.30:
 	clisp -C 030/main.lisp
