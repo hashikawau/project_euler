@@ -4,13 +4,25 @@
 
 (defpackage common
   (:use common-lisp)
-  (:export p-apply
-           f-compose
-           seq
-           permutations
-           ))
+  (:export
+    for-each
+    p-apply
+    f-compose
+    seq
+    permutations
+    sum
+    product
+  ))
 
 (in-package common)
+
+;--------------------------------------
+;
+;--------------------------------------
+(defun for-each (xs f)
+  (dolist
+    (x xs)
+    (apply f (list x))))
 
 ;--------------------------------------
 ;
@@ -134,6 +146,9 @@
 (assert (equal '()                                                                                        (permutations '(1 2) '(10 20) '()) ))
 (assert (equal '((1 10 100) (1 10 200) (1 20 100) (1 20 200) (2 10 100) (2 10 200) (2 20 100) (2 20 200)) (permutations '(1 2) '(10 20) '(100 200)) ))
 
-
-
+;--------------------------------------
+;
+;--------------------------------------
+(defun sum (lst) (reduce #'+ lst))
+(defun product (lst) (reduce #'* lst))
 
