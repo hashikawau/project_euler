@@ -6,7 +6,9 @@
   (:use common-lisp)
   (:export p-apply
            f-compose
-           seq))
+           seq
+           permutations
+           ))
 
 (in-package common)
 
@@ -94,4 +96,44 @@
   (assert (equal '()      (seq 0 2 0)))
   (assert (equal '()      (seq 2 0 (- 1))))
 )
+
+; -------------------------------------
+;
+; -------------------------------------
+(defun permutations (&rest lst-s)
+  (reduce
+    #'cross-join
+    lst-s
+    :from-end t
+    :initial-value '(()) ))
+
+; vector-a = '(1 2)
+; vector-b = '((3) (4))
+; return = '((1 3) (1 4) (2 3) (2 4))
+(defun cross-join (vector-a vector-b)
+ (reduce
+   #'(lambda (a accum)
+       (append (cross-elem a vector-b) accum) )
+   vector-a
+   :from-end t
+   :initial-value '() ))
+
+; a = 1
+; vector-b = '((3) (4))
+; return = '((1 3) (1 4))
+(defun cross-elem (a vector-b)
+  (mapcar
+    #'(lambda (b) (cons a b))
+    vector-b))
+
+(assert (equal '()                            (permutations '()    '()     ) ))
+(assert (equal '()                            (permutations '(1 2) '()     ) ))
+(assert (equal '()                            (permutations '()    '(10 20)) ))
+(assert (equal '((1 10) (1 20) (2 10) (2 20)) (permutations '(1 2) '(10 20)) ))
+(assert (equal '()                                                                                        (permutations '()    '()      '()) ))
+(assert (equal '()                                                                                        (permutations '(1 2) '(10 20) '()) ))
+(assert (equal '((1 10 100) (1 10 200) (1 20 100) (1 20 200) (2 10 100) (2 10 200) (2 20 100) (2 20 200)) (permutations '(1 2) '(10 20) '(100 200)) ))
+
+
+
 
