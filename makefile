@@ -1,5 +1,7 @@
 
 
+lisp.31:
+	clisp -C 031/main.lisp
 
 lisp.622:
 	clisp -C 622/main.lisp

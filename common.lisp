@@ -8,6 +8,7 @@
     for-each
     take
     drop
+    repeat
     p-apply
     f-compose
     seq
@@ -44,6 +45,11 @@
     (< n 1)
     lst
     (drop (1- n) (rest lst)) ))
+
+(defun repeat (v n &optional (accum nil))
+  (if (< n 1)
+    accum
+    (repeat v (1- n) (cons v accum))))
 
 ;--------------------------------------
 ;
