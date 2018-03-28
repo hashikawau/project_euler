@@ -13,6 +13,7 @@
     f-compose
     seq
     cross-join
+    permutations
     sum
     product
     factors
@@ -50,6 +51,41 @@
   (if (< n 1)
     accum
     (repeat v (1- n) (cons v accum))))
+
+;--------------------------------------
+;
+;--------------------------------------
+(defun remove-nth (n lst &optional (prev-lst nil))
+  (cond
+    ((>= n (length lst))
+      (values lst nil) )
+    ((< n 0)
+      (values
+        (append (reverse (rest prev-lst)) lst)
+        (first prev-lst) ))
+    (t
+      (remove-nth
+        (1- n)
+        (rest lst)
+        (cons (first lst) prev-lst) ))))
+
+(defun test-remove-nth (expected-result-lst expected-removed-elem arg-n arg-lst)
+  (assert
+    (multiple-value-bind (result-lst removed-elem)
+      (remove-nth arg-n arg-lst)
+      (if (and
+            (equal expected-result-lst result-lst)
+            (equal expected-removed-elem removed-elem) )
+        t
+        (format t "fail: arg-n=~A, arg-lst=~A, actual-result-lst=~A, actual-removed-elem=~A~%" arg-n arg-lst result-lst removed-elem) ))))
+(test-remove-nth '() nil 0 '())
+(test-remove-nth '() nil -1 '())
+(test-remove-nth '() nil 1 '())
+(test-remove-nth '() 10 0 '(10))
+(test-remove-nth '(10) nil -1 '(10))
+(test-remove-nth '(10) nil 1 '(10))
+(test-remove-nth '(20) 10 0 '(10 20))
+(test-remove-nth '(10) 20 1 '(10 20))
 
 ;--------------------------------------
 ;
@@ -172,6 +208,32 @@
 (assert (equal '()                                                                                        (cross-join '()    '()      '()) ))
 (assert (equal '()                                                                                        (cross-join '(1 2) '(10 20) '()) ))
 (assert (equal '((1 10 100) (1 10 200) (1 20 100) (1 20 200) (2 10 100) (2 10 200) (2 20 100) (2 20 200)) (cross-join '(1 2) '(10 20) '(100 200)) ))
+
+;--------------------------------------
+;
+;--------------------------------------
+(defun permutations (lst &optional (accum '(nil)))
+  (if (null lst)
+    accum
+    (reduce
+      #'append
+      (mapcar
+        #'(lambda (i)
+            (multiple-value-bind (no-nth-lst removed-elem) (remove-nth i lst)
+              (permutations
+                no-nth-lst
+                (mapcar (p-apply #'cons removed-elem) accum) )))
+        (seq 0 (1- (length lst))) ))))
+
+(defun test-permutations (expected-result arg-lst)
+  (assert
+    (equal
+      expected-result
+      (permutations arg-lst))))
+(test-permutations '(nil) '())
+(test-permutations '((1)) '(1))
+(test-permutations '((2 1) (1 2)) '(1 2))
+(test-permutations '((3 2 1) (2 3 1) (3 1 2) (1 3 2) (2 1 3) (1 2 3)) '(1 2 3))
 
 ;--------------------------------------
 ;
