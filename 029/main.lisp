@@ -11,7 +11,7 @@
   (remove-duplicates
     (mapcar
       #'(lambda (tup) (let ((a (first tup)) (b (second tup))) (expt a b)))
-      (permutations (seq 2 limit-a) (seq 2 limit-b)) )))
+      (cross-join (seq 2 limit-a) (seq 2 limit-b)) )))
 
 (main)
 

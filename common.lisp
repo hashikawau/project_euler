@@ -12,7 +12,7 @@
     p-apply
     f-compose
     seq
-    permutations
+    cross-join
     sum
     product
     factors
@@ -139,9 +139,9 @@
 ; -------------------------------------
 ;
 ; -------------------------------------
-(defun permutations (&rest lst-s)
+(defun cross-join (&rest lst-s)
   (reduce
-    #'cross-join
+    #'cross-join-helper
     lst-s
     :from-end t
     :initial-value '(()) ))
@@ -149,7 +149,7 @@
 ; vector-a = '(1 2)
 ; vector-b = '((3) (4))
 ; return = '((1 3) (1 4) (2 3) (2 4))
-(defun cross-join (vector-a vector-b)
+(defun cross-join-helper (vector-a vector-b)
  (reduce
    #'(lambda (a accum)
        (append (cross-elem a vector-b) accum) )
@@ -165,13 +165,13 @@
     #'(lambda (b) (cons a b))
     vector-b))
 
-(assert (equal '()                            (permutations '()    '()     ) ))
-(assert (equal '()                            (permutations '(1 2) '()     ) ))
-(assert (equal '()                            (permutations '()    '(10 20)) ))
-(assert (equal '((1 10) (1 20) (2 10) (2 20)) (permutations '(1 2) '(10 20)) ))
-(assert (equal '()                                                                                        (permutations '()    '()      '()) ))
-(assert (equal '()                                                                                        (permutations '(1 2) '(10 20) '()) ))
-(assert (equal '((1 10 100) (1 10 200) (1 20 100) (1 20 200) (2 10 100) (2 10 200) (2 20 100) (2 20 200)) (permutations '(1 2) '(10 20) '(100 200)) ))
+(assert (equal '()                            (cross-join '()    '()     ) ))
+(assert (equal '()                            (cross-join '(1 2) '()     ) ))
+(assert (equal '()                            (cross-join '()    '(10 20)) ))
+(assert (equal '((1 10) (1 20) (2 10) (2 20)) (cross-join '(1 2) '(10 20)) ))
+(assert (equal '()                                                                                        (cross-join '()    '()      '()) ))
+(assert (equal '()                                                                                        (cross-join '(1 2) '(10 20) '()) ))
+(assert (equal '((1 10 100) (1 10 200) (1 20 100) (1 20 200) (2 10 100) (2 10 200) (2 20 100) (2 20 200)) (cross-join '(1 2) '(10 20) '(100 200)) ))
 
 ;--------------------------------------
 ;
